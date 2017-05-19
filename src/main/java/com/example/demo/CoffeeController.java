@@ -2,6 +2,9 @@ package com.example.demo;
 
 import org.springframework.web.bind.annotation.*;
 
+import static java.lang.String.format;
+import static javax.xml.ws.soap.AddressingFeature.ID;
+
 /**
  * Created by ianharvey on 5/19/17.
  */
@@ -24,5 +27,17 @@ public class CoffeeController {
     public Coffee create(@RequestBody Coffee coffee) {
         return this.repository.save(coffee);
     }
+
+    @GetMapping("/{id}")
+    public Coffee getSomething(@PathVariable("id") Long id) {
+        return this.repository.findOne(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        this.repository.delete(id);
+    }
+
+
 
 }
