@@ -3,7 +3,6 @@ package com.example.demo;
 import org.springframework.web.bind.annotation.*;
 
 import static java.lang.String.format;
-import static javax.xml.ws.soap.AddressingFeature.ID;
 
 /**
  * Created by ianharvey on 5/19/17.
@@ -38,6 +37,17 @@ public class CoffeeController {
         this.repository.delete(id);
     }
 
-
+    @PatchMapping("/{id}")
+    public Coffee patch(
+            @PathVariable("id") Long id,
+            @RequestBody Coffee coffee) {
+        System.out.println(coffee);
+        if (repository.exists(id)) {
+            return this.repository.save(coffee);
+        }
+        else {
+        return this.repository.findOne(id);
+        }
+    }
 
 }
