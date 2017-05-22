@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static java.lang.String.format;
@@ -33,21 +35,21 @@ public class CoffeeController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public String delete(@PathVariable("id") Long id) {
         this.repository.delete(id);
+        return "The record with the id of " + id + " was successfully deleted.";
     }
 
     @PatchMapping("/{id}")
-    public Coffee patch(
+    public ResponseEntity<Coffee> patch(
             @PathVariable("id") Long id,
             @RequestBody Coffee coffee) {
-        System.out.println(coffee);
-        if (repository.exists(id)) {
-            return this.repository.save(coffee);
+
+        if (this.repository.exists(id)) {
+            return new ResponseEntity<Coffee>(this.repository.save(coffee), HttpStatus.OK);
         }
         else {
-        return this.repository.findOne(id);
+            return new ResponseEntity<String>("crap", HttpStatus.BAD_REQUEST);
+        }
         }
     }
-
-}
